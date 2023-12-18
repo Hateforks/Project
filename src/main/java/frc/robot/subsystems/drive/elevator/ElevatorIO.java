@@ -23,6 +23,7 @@ public interface ElevatorIO {
 
     /** Updates the set of loggable inputs. */
     default void updateInputs(ElevatorIOInputs inputs) {
+        
     }
 
     /** Run open loop at the specified voltage. */

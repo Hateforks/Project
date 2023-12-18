@@ -45,5 +45,56 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         encoder.setPosition(absoluteEncoder.getDistance() * 28.45 + 0.6);
     }
 
+    /** Updates the set of loggable inputs. */
+    default void updateInputs(ElevatorIOInputs inputs) {
+        
+    }
+
+    /** Run open loop at the specified voltage. */
+    default void setVoltage(double motorVolts) {
+    }
+
+    /** Returns the distance measurement */
+    default double getDistance() {
+        return 0.0;
+    }
+    /** Sets PID Constants to manage speed */
+    default void setPIDConstants(double p, double i, double d, double ff) {
+    }
+
+    /** Go to Setpoint */
+    default void goToSetpoint(double setpoint) {
+    }
+    /** Toggles brakes on or off to stop the elevator */
+    default void setBrake(boolean brake) {
+    }
+    /** Sets the default setpoint boolean to false */
+    default boolean atSetpoint() {
+        return false;
+    }
+    /** Sets the PID arguments used in setPIDConstants */
+    default void setP(double p) {
+
+    }
+    
+    default void setI(double i) {
+
+    }
+
+    default void setD(double d) {
+
+    }
+
+    default void setFF(double ff) {
+        
+    }
+    /** Returns the PID arguments used in setPIDConstants */
+    default double getP() { return 0.0; }
+
+    default double getI() { return 0.0; }
+
+    default double getD() { return 0.0; }
+
+    default double getFF() { return 0.0; }
 
 }
