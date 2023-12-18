@@ -25,4 +25,25 @@ public class Elevator extends SubsystemBase {
     private LoggedDashboardNumber i = new LoggedDashboardNumber("Elevator/I", ELEVATOR_PID[1]);
     private LoggedDashboardNumber d = new LoggedDashboardNumber("Elevator/D", ELEVATOR_PID[2]);
     private LoggedDashboardNumber ff = new LoggedDashboardNumber("Elevator/FF", ELEVATOR_PID[3]);
+
+    private double setpoint = 0;
+
+    private final ElevatorIO io;
+
+      // Create a Mechanism2d visualization of the elevator
+    private MechanismLigament2d ElevatorMechanism;
+
+    public Elevator(ElevatorIO io) {
+        this.io = io;
+        SmartDashboard.putData(getName(), this);
+    }
+
+    public double highSetpoint() {
+        return io.ELEVATOR_MAX_HEIGHT;
+    }
+    @Override
+    public void periodic() {
+        io.updateInputs(inputs);
+        Logger.getInstance().processInputs("Elevator", inputs);
+    }
 }
