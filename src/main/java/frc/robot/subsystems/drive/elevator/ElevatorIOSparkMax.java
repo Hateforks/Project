@@ -45,5 +45,5 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         encoder.setPosition(absoluteEncoder.getDistance() * 28.45 + 0.6);
     }
 
-    
+
 }
