@@ -47,54 +47,78 @@ public class ElevatorIOSparkMax implements ElevatorIO {
 
     /** Updates the set of loggable inputs. */
     default void updateInputs(ElevatorIOInputs inputs) {
-        
+        inputs.positionMeters = encoder.getPosition();
+        inputs.velocityMeters = encoder.getVelocity();
+        inputs.appliedVolts = elevatorMotor.getAppliedOutput() * elevatorMotor.getBusVoltage();
+        inputs.currentAmps = new double[] {elevatorMotor.getOutputCurrent()};
+        inputs.tempCelsius = new double[] {elevatorMotor.getMotorTemperature()};
     }
 
     /** Run open loop at the specified voltage. */
     default void setVoltage(double motorVolts) {
+        elevatorMotor.setVoltage(motorVolts);
     }
 
     /** Returns the distance measurement */
     default double getDistance() {
-        return 0.0;
+        return encoder.getPosition();
     }
     /** Sets PID Constants to manage speed */
     default void setPIDConstants(double p, double i, double d, double ff) {
+        pidController.setP(p);
+        pidController.setI(i);
+        pidController.setD(d);
+        pidController.setFF(ff);
     }
 
     /** Go to Setpoint */
     default void goToSetpoint(double setpoint) {
+        this.setpoint = setpoint;
+        pidController.setReference(setpoint, CANSparkMax.ControlType.kPosition);
     }
     /** Toggles brakes on or off to stop the elevator */
     default void setBrake(boolean brake) {
+        elevatorMotor.setIdleMode(brake ? IdleMode.kBrake : IdleMode.kCoast);
     }
-    /** Sets the default setpoint boolean to false */
+    /** 
+     * Determines whether the elevator is at the setpoint through
+     * whether the encoder's reported position is within the tolerance
+     * of the PID
+     */
     default boolean atSetpoint() {
-        return false;
+        return Math.abs(encoder.getPosition() - setpoint) < ELEVATOR_PID_TOLERANCE;
     }
     /** Sets the PID arguments used in setPIDConstants */
     default void setP(double p) {
-
+        pidController.setP(p);
     }
     
     default void setI(double i) {
-
+        pidController.setI(i);
     }
 
     default void setD(double d) {
-
+        pidController.setD(d);
     }
 
     default void setFF(double ff) {
-        
+        pidController.setFF(ff);
     }
     /** Returns the PID arguments used in setPIDConstants */
-    default double getP() { return 0.0; }
+    default double getP() { 
+        return pidController.getP();
+    }
 
-    default double getI() { return 0.0; }
+    default double getI() {
+        return pidController.getI();
+    }
 
-    default double getD() { return 0.0; }
+    default double getD() {
+        return pidController.getD();
+    }
 
-    default double getFF() { return 0.0; }
+    default double getFF() {
+        return pidController.getFF();
+    }
 
 }
