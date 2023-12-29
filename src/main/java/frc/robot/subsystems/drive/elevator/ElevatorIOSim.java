@@ -14,8 +14,10 @@ import static frc.robot.Constants.ElectricalLayout.*;
 import static frc.robot.Constants.*;
 import static frc.robot.Constants.Elevator.ElevatorPhysicalConstants.*;
 
+// spin off of the IO class
 public class ElevatorIOSim implements ElevatorIO {
     private final ProfiledPIDController m_controller =
+      // creqation of new objects to allow the simulation to run
         new ProfiledPIDController(
             kElevatorKp,
             kElevatorKi,
@@ -31,6 +33,7 @@ public class ElevatorIOSim implements ElevatorIO {
         );
          private final DCMotor m_elevatorGearbox = DCMotor.getVex775Pro(4);
 
+//         main sensor function that could be utilized in the future for automonous movement as well as precise control
         private final Encoder m_encoder = new Encoder(kEncoderAChannel, kEncoderBChannel);
          private final ElevatorSim sim =
             new ElevatorSim(
@@ -43,6 +46,42 @@ public class ElevatorIOSim implements ElevatorIO {
                 false,
                 VecBuilder.fill(0.01)
         );
+
+private final EncoderSim m_encoderSim = new EncoderSim(m_encoder);
+    
+    public ElevatorIOSim() {
+        m_encoder.setDistancePerPulse(kElevatorEncoderDistPerPulse);
+    }
+
+    @Override
+    public void updateInputs(ElevatorIOInputs inputs) {
+        /* the changing of aspects of the class that will allow for the 
+        robot and the controller to have updated 
+        and current information about its position and  power usage*/
+        sim.update(0.02);
+        m_encoderSim.setDistance(sim.getPositionMeters());
+        inputs.positionMeters = sim.getPositionMeters();
+        inputs.velocityMeters = sim.getVelocityMetersPerSecond();
+        inputs.currentAmps = new double[] {sim.getCurrentDrawAmps()};
+        // inputs.voltage = new double[] {sim.getBusVoltageV()};
+    } 
+
+    @Override
+    public void setVoltage(double motorVolts) {
+        sim.setInputVoltage(motorVolts);
+    }
+
+
+    @Override
+    public void goToSetpoint(double setpoint) {
+      // defines the point of which the computer is expected to arrive at
+        m_controller.setGoal(setpoint);
+        // With the setpoint value we run PID control like normal
+        double pidOutput = m_controller.calculate(m_encoder.getDistance());
+        double feedforwardOutput = m_feedforward.calculate(m_controller.getSetpoint().velocity);
+
+        sim.setInputVoltage(feedforwardOutput + pidOutput);
+    }
 
  @Override
     public double getDistance() {
@@ -96,6 +135,7 @@ public class ElevatorIOSim implements ElevatorIO {
 
     @Override
     public double getFF() {
+        // allows the robot to see the velocity needed to end up at the desired point.
         return m_feedforward.calculate(m_controller.getSetpoint().velocity);
     }
     
