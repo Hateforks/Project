@@ -51,8 +51,7 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final GyroIOReal gyro = GyroIOReal.getInstance();
-  private final Elevator elevator;
-
+  private final Elevator elevator = new Elevator();
   private Mechanism2d mech = new Mechanism2d(3, 3);
 
   // Controllers
@@ -116,6 +115,11 @@ public class RobotContainer {
 
     // cancel trajectory
     driver.getY().onTrue(drive.endTrajectoryCommand());
+
+    // default command
+    Elevator.setDefaultCommand(
+       new RunCommand = Elevator.move(operatorController.getLeftX()); 
+    )
   }
 
   /**
@@ -126,4 +130,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     return autoChooser.get();
   }
-}
+}/**
+  *
+ */
