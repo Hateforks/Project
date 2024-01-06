@@ -50,6 +50,7 @@ import frc.robot.subsystems.elevator.ElevatorIOSparkMax;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
+  private final Elevator elevator;
   private final GyroIOReal gyro = GyroIOReal.getInstance();
   private final Elevator elevator = new Elevator();
   private Mechanism2d mech = new Mechanism2d(3, 3);
@@ -71,24 +72,29 @@ public class RobotContainer {
       // Real robot, instantiate hardware IO implementations
       case REAL:
         drive = new Drive(new DriveIOSparkMax(), new Pose2d());
+        // initialized elevator subsystem
+        elevator = new Elevator(new ElevatorIOSparkMax());
         break;
 
       // Sim robot, instantiate physics sim IO implementations
       case SIM:
         drive = new Drive(new DriveIOSim(), new Pose2d());
+        elevator = new Elevator(new ElevatorIOSim());
         break;
 
       // Replayed robot, disable IO implementations
       default:
         drive = new Drive(new DriveIO() {
         }, new Pose2d());
+        elevator = new Elevator(new ElevatorIO() {
+        });
         break;
     }
 
     // Set up robot state manager
-
+    // added elevator mechanisms
     MechanismRoot2d root = mech.getRoot("elevator", 1, 0.5);
-    // add subsystem mechanisms
+    elevator.setMechanism(root.append(elevator.getElevatorMechanism()));
     SmartDashboard.putData("Arm Mechanism", mech);
 
     isBlue = DriverStation.getAlliance() == DriverStation.Alliance.Blue;
