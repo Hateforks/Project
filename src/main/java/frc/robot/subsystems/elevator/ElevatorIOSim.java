@@ -83,6 +83,7 @@ private final EncoderSim m_encoderSim = new EncoderSim(m_encoder);
         sim.setInputVoltage(feedforwardOutput + pidOutput);
     }
 
+// functions used to return pertinent values
  @Override
     public double getDistance() {
         return sim.getPositionMeters();
@@ -92,7 +93,7 @@ private final EncoderSim m_encoderSim = new EncoderSim(m_encoder);
     public boolean atSetpoint() {
         return m_controller.atGoal();
     }
-
+// sets up the controller for objects of the LoggedDashboardNumber class
     @Override
     public void setP(double p) {
         m_controller.setP(p);
@@ -107,7 +108,7 @@ private final EncoderSim m_encoderSim = new EncoderSim(m_encoder);
     public void setD(double d) {
         m_controller.setD(d);
     }
-
+// makes object of the ElevatorFeedforward class
     @Override
     public void setFF(double ff) {
         m_feedforward = new ElevatorFeedforward(
@@ -117,7 +118,7 @@ private final EncoderSim m_encoderSim = new EncoderSim(m_encoder);
             kElevatorkA
         );
     }
-
+//  lots of getters
     @Override
     public double getP() {
         return m_controller.getP();
