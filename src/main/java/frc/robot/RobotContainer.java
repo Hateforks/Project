@@ -35,10 +35,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.drive.elevator.Elevator;
-import frc.robot.subsystems.drive.elevator.ElevatorIO;
-import frc.robot.subsystems.drive.elevator.ElevatorIOSim;
-import frc.robot.subsystems.drive.elevator.ElevatorIOSparkMax;
+import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.ElevatorIO;
+import frc.robot.subsystems.elevator.ElevatorIOSim;
+import frc.robot.subsystems.elevator.ElevatorIOSparkMax;
 
 /**
  * This class is where the bulk of the robot should be declared. Since

@@ -71,7 +71,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         pidController.setFF(ff);
     }
 
-    /** Go to Setpoint */
+    /** Tells the elevator to go to its default setpoint*/
     default void goToSetpoint(double setpoint) {
         this.setpoint = setpoint;
         pidController.setReference(setpoint, CANSparkMax.ControlType.kPosition);

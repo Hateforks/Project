@@ -1,4 +1,4 @@
-package frc.robot.subsystems.drive.elevator;
+package frc.robot.subsystems.elevator;
 
 import org.littletonrobotics.junction.AutoLog;
 
@@ -17,7 +17,7 @@ public interface ElevatorIO {
         public double[] currentAmps = new double[] {};
         public double[] tempCelsius = new double[] {};
     }
-
+    /** Restraints on the elevator's movement */
     public double ELEVATOR_MAX_HEIGHT = 36.0;
     public double ELEVATOR_MIN_HEIGHT = 0.0;
 
@@ -26,7 +26,7 @@ public interface ElevatorIO {
         
     }
 
-    /** Run open loop at the specified voltage. */
+    /** Sets voltage to control elevator speed */
     default void setVoltage(double motorVolts) {
     }
 
@@ -34,7 +34,7 @@ public interface ElevatorIO {
     default double getDistance() {
         return 0.0;
     }
-    /** Sets PID Constants to manage speed */
+    /** Sets PID Constants to set desired speed or location */
     default void setPIDConstants(double p, double i, double d, double ff) {
     }
 
